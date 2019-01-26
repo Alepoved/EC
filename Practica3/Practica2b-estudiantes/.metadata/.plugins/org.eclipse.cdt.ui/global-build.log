@@ -1,0 +1,88 @@
+16:56:03 **** Clean-only build of configuration Debug for project pract2-parte1 ****
+cs-make clean 
+cs-rm -rf  pract2-parte1.siz  ./D8Led.o ./button.o ./gpio.o ./init.o ./leds.o ./main.o ./utils.o  ./D8Led.d ./button.d ./gpio.d ./leds.d ./main.d ./utils.d  pract2-parte1.hex  pract2-parte1.lst  ./init.d  pract2-parte1.elf
+' '
+18:06:27 **** Clean-only build of configuration Debug for project pract2-parte1 ****
+cs-make clean 
+cs-rm -rf  pract2-parte1.siz  ./D8Led.o ./button.o ./gpio.o ./init.o ./leds.o ./main.o ./utils.o  ./D8Led.d ./button.d ./gpio.d ./leds.d ./main.d ./utils.d  pract2-parte1.hex  pract2-parte1.lst  ./init.d  pract2-parte1.elf
+' '
+18:06:30 **** Build of configuration Debug for project pract2-parte1 ****
+cs-make all 
+'Building file: ../D8Led.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="D8Led.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"D8Led.d" -MT"D8Led.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "D8Led.o" "../D8Led.c"
+'Finished building: ../D8Led.c'
+' '
+'Building file: ../button.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="button.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"button.d" -MT"button.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "button.o" "../button.c"
+'Finished building: ../button.c'
+' '
+'Building file: ../gpio.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="gpio.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"gpio.d" -MT"gpio.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "gpio.o" "../gpio.c"
+'Finished building: ../gpio.c'
+' '
+'Building file: ../init.S'
+'Invoking: ARM Sourcery Windows GCC Assembler'
+arm-none-eabi-gcc -x assembler-with-cpp -Wall -Wa,-adhlns="init.o.lst" -c -fmessage-length=0 -MMD -MP -MF"init.d" -MT"init.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "init.o" "../init.S"
+'Finished building: ../init.S'
+' '
+'Building file: ../intcontroller.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="intcontroller.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"intcontroller.d" -MT"intcontroller.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "intcontroller.o" "../intcontroller.c"
+'Finished building: ../intcontroller.c'
+' '
+'Building file: ../leds.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="leds.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"leds.d" -MT"leds.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "leds.o" "../leds.c"
+'Finished building: ../leds.c'
+' '
+'Building file: ../main.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="main.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"main.d" -MT"main.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "main.o" "../main.c"
+'Finished building: ../main.c'
+' '
+'Building file: ../timer.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="timer.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"timer.d" -MT"timer.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "timer.o" "../timer.c"
+../timer.c: In function 'tmr_set_divider':
+../timer.c:33:6: warning: unused variable 'ret'
+'Finished building: ../timer.c'
+' '
+'Building file: ../utils.c'
+'Invoking: ARM Sourcery Windows GCC C Compiler'
+arm-none-eabi-gcc -O0 -Wall -Wa,-adhlns="utils.o.lst" -c -fmessage-length=0 -mapcs-frame -MMD -MP -MF"utils.d" -MT"utils.d" -mcpu=arm7tdmi -g3 -gdwarf-2 -o "utils.o" "../utils.c"
+'Finished building: ../utils.c'
+' '
+'Building target: pract2-parte1.elf'
+'Invoking: ARM Sourcery Windows GCC C Linker'
+arm-none-eabi-gcc -T"../ld_script.ld" -nostartfiles -Wl,-Map,pract2-parte1.map -mcpu=arm7tdmi -g3 -gdwarf-2 -o "pract2-parte1.elf"  ./D8Led.o ./button.o ./gpio.o ./init.o ./intcontroller.o ./leds.o ./main.o ./timer.o ./utils.o   
+'Finished building target: pract2-parte1.elf'
+' '
+'Invoking: ARM Sourcery Windows GNU Create Flash Image'
+arm-none-eabi-objcopy -O binary pract2-parte1.elf  "pract2-parte1.hex"
+'Finished building: pract2-parte1.hex'
+' '
+'Invoking: ARM Sourcery Windows GNU Create Listing'
+arm-none-eabi-objdump -h -S pract2-parte1.elf > "pract2-parte1.lst"
+'Finished building: pract2-parte1.lst'
+' '
+'Invoking: ARM Sourcery Windows GNU Print Size'
+arm-none-eabi-size  --format=berkeley pract2-parte1.elf
+   text	   data	    bss	    dec	    hex	filename
+   7216	    116	      4	   7336	   1ca8	pract2-parte1.elf
+'Finished building: pract2-parte1.siz'
+' '
+18:06:44 **** Incremental Build of configuration Debug for project pract2-parte1 ****
+cs-make all 
+'Invoking: ARM Sourcery Windows GNU Print Size'
+arm-none-eabi-size  --format=berkeley pract2-parte1.elf
+   text	   data	    bss	    dec	    hex	filename
+   7216	    116	      4	   7336	   1ca8	pract2-parte1.elf
+'Finished building: pract2-parte1.siz'
+' '
+18:31:00 **** Clean-only build of configuration Debug for project pract2-parte1 ****
+cs-make clean 
+cs-rm -rf  pract2-parte1.siz  ./D8Led.o ./button.o ./gpio.o ./init.o ./intcontroller.o ./leds.o ./main.o ./timer.o ./utils.o  ./D8Led.d ./button.d ./gpio.d ./intcontroller.d ./leds.d ./main.d ./timer.d ./utils.d  pract2-parte1.hex  pract2-parte1.lst  ./init.d  pract2-parte1.elf
+' '

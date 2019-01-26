@@ -1,0 +1,74 @@
+/*-------------------------------------------------------------------
+**
+**  Fichero:
+**    button.c  10/6/2014
+**
+**    Estructura de Computadores
+**    Dpto. de Arquitectura de Computadores y Automática
+**    Facultad de Informática. Universidad Complutense de Madrid
+**
+**  Propósito:
+**    Contiene las implementaciones de las funciones
+**    para la gestión de los pulsadores de la placa de prototipado
+**
+**  Notas de diseño:
+**
+**-----------------------------------------------------------------*/
+
+#include "44b.h"
+#include "button.h"
+#include "leds.h"
+#include "timer.h"
+#include "utils.h"
+
+static void button_ISR(void) __attribute__ ((interrupt ("IRQ")));
+
+void button_init( void )
+{
+	/* Establece la rutina de servicio para TIMER0 */
+ 	pISR_EINT4567 = (unsigned) button_ISR;
+
+	/* pines 6 y 7 generan interrupciones EINT6 y EINT7 */
+	rPCONG  |= (0x3 << 12 ) | (0x3 << 14 );
+
+	/* EINT 6 y 7 generan interrupciones por flanco de bajada*/
+ 	rEXTINT &= ~((0xf << 24) | (0xf << 28));
+ 	rEXTINT |=  ((0x2 << 24) | (0x2 << 28));
+
+	/* activado el pull-up para los pines 6 y 7 */
+	rPUPG &= ~((0x1 << 6) | (0x1 << 7));
+
+	/* borramos posibles interrupciones pendientes */
+	rEXTINTPND = 0x4 | 0x8;
+	rI_ISPC    = BIT_EINT4567;
+
+	/* Desenmascara las lineas eint4567 y el bit global */
+	rINTMSK    &= ~(BIT_GLOBAL|BIT_EINT4567); 
+}
+
+#define BUT1 0x4
+#define BUT2 0x8
+
+static void button_ISR(void)
+{
+    /* Idenficiar la interrupcion */
+    unsigned int which_int = rEXTINTPND;
+
+	/* Espera fin de rebote de presión, 200 ms */
+    Delay( 2000 );
+	
+	if (BUT1 == (which_int & BUT1))
+		timer_switch();
+	
+	if (BUT2 == (which_int & BUT2))
+		timer_restart();	
+
+    /* Finalizar ISR */
+    rEXTINTPND = which_int & 0xF;	// borra los bits en EXTINTPND activados
+    rI_ISPC    = BIT_EINT4567;		// borra el bit pendiente en INTPND
+}
+
+
+
+
+
