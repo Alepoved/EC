@@ -1,0 +1,218 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"leds.c"
+  12              		.text
+  13              		.align	2
+  14              		.global	leds_display
+  16              	leds_display:
+  17              		@ Function supports interworking.
+  18              		@ args = 0, pretend = 0, frame = 0
+  19              		@ frame_needed = 1, uses_anonymous_args = 0
+  20 0000 0DC0A0E1 		mov	ip, sp
+  21 0004 18D82DE9 		stmfd	sp!, {r3, r4, fp, ip, lr, pc}
+  22 0008 3C409FE5 		ldr	r4, .L8
+  23 000c 010010E3 		tst	r0, #1
+  24 0010 0010A013 		movne	r1, #0
+  25 0014 0110A003 		moveq	r1, #1
+  26 0018 000084E5 		str	r0, [r4, #0]
+  27 001c 04B04CE2 		sub	fp, ip, #4
+  28 0020 0900A0E3 		mov	r0, #9
+  29 0024 FEFFFFEB 		bl	portB_write
+  30 0028 003094E5 		ldr	r3, [r4, #0]
+  31 002c 020013E3 		tst	r3, #2
+  32 0030 0010A013 		movne	r1, #0
+  33 0034 0110A003 		moveq	r1, #1
+  34 0038 0A00A0E3 		mov	r0, #10
+  35 003c FEFFFFEB 		bl	portB_write
+  36 0040 14D04BE2 		sub	sp, fp, #20
+  37 0044 18689DE8 		ldmfd	sp, {r3, r4, fp, sp, lr}
+  38 0048 1EFF2FE1 		bx	lr
+  39              	.L9:
+  40              		.align	2
+  41              	.L8:
+  42 004c 00000000 		.word	.LANCHOR0
+  44              		.align	2
+  45              		.global	leds_switch
+  47              	leds_switch:
+  48              		@ Function supports interworking.
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51              		@ link register save eliminated.
+  52 0050 0C309FE5 		ldr	r3, .L11
+  53 0054 000093E5 		ldr	r0, [r3, #0]
+  54 0058 030020E2 		eor	r0, r0, #3
+  55 005c 000083E5 		str	r0, [r3, #0]
+  56 0060 FEFFFFEA 		b	leds_display
+  57              	.L12:
+  58              		.align	2
+  59              	.L11:
+  60 0064 00000000 		.word	.LANCHOR0
+  62              		.align	2
+  63              		.global	led2_switch
+  65              	led2_switch:
+  66              		@ Function supports interworking.
+  67              		@ args = 0, pretend = 0, frame = 0
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69              		@ link register save eliminated.
+  70 0068 0C309FE5 		ldr	r3, .L14
+  71 006c 000093E5 		ldr	r0, [r3, #0]
+  72 0070 020020E2 		eor	r0, r0, #2
+  73 0074 000083E5 		str	r0, [r3, #0]
+  74 0078 FEFFFFEA 		b	leds_display
+  75              	.L15:
+  76              		.align	2
+  77              	.L14:
+  78 007c 00000000 		.word	.LANCHOR0
+  80              		.align	2
+  81              		.global	led1_switch
+  83              	led1_switch:
+  84              		@ Function supports interworking.
+  85              		@ args = 0, pretend = 0, frame = 0
+  86              		@ frame_needed = 0, uses_anonymous_args = 0
+  87              		@ link register save eliminated.
+  88 0080 0C309FE5 		ldr	r3, .L17
+  89 0084 000093E5 		ldr	r0, [r3, #0]
+  90 0088 010020E2 		eor	r0, r0, #1
+  91 008c 000083E5 		str	r0, [r3, #0]
+  92 0090 FEFFFFEA 		b	leds_display
+  93              	.L18:
+  94              		.align	2
+  95              	.L17:
+  96 0094 00000000 		.word	.LANCHOR0
+  98              		.align	2
+  99              		.global	led2_off
+ 101              	led2_off:
+ 102              		@ Function supports interworking.
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 105              		@ link register save eliminated.
+ 106 0098 0C309FE5 		ldr	r3, .L20
+ 107 009c 000093E5 		ldr	r0, [r3, #0]
+ 108 00a0 0200C0E3 		bic	r0, r0, #2
+ 109 00a4 000083E5 		str	r0, [r3, #0]
+ 110 00a8 FEFFFFEA 		b	leds_display
+ 111              	.L21:
+ 112              		.align	2
+ 113              	.L20:
+ 114 00ac 00000000 		.word	.LANCHOR0
+ 116              		.align	2
+ 117              		.global	led2_on
+ 119              	led2_on:
+ 120              		@ Function supports interworking.
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		@ link register save eliminated.
+ 124 00b0 0C309FE5 		ldr	r3, .L23
+ 125 00b4 000093E5 		ldr	r0, [r3, #0]
+ 126 00b8 020080E3 		orr	r0, r0, #2
+ 127 00bc 000083E5 		str	r0, [r3, #0]
+ 128 00c0 FEFFFFEA 		b	leds_display
+ 129              	.L24:
+ 130              		.align	2
+ 131              	.L23:
+ 132 00c4 00000000 		.word	.LANCHOR0
+ 134              		.align	2
+ 135              		.global	led1_off
+ 137              	led1_off:
+ 138              		@ Function supports interworking.
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 141              		@ link register save eliminated.
+ 142 00c8 0C309FE5 		ldr	r3, .L26
+ 143 00cc 000093E5 		ldr	r0, [r3, #0]
+ 144 00d0 0100C0E3 		bic	r0, r0, #1
+ 145 00d4 000083E5 		str	r0, [r3, #0]
+ 146 00d8 FEFFFFEA 		b	leds_display
+ 147              	.L27:
+ 148              		.align	2
+ 149              	.L26:
+ 150 00dc 00000000 		.word	.LANCHOR0
+ 152              		.align	2
+ 153              		.global	led1_on
+ 155              	led1_on:
+ 156              		@ Function supports interworking.
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159              		@ link register save eliminated.
+ 160 00e0 0C309FE5 		ldr	r3, .L29
+ 161 00e4 000093E5 		ldr	r0, [r3, #0]
+ 162 00e8 010080E3 		orr	r0, r0, #1
+ 163 00ec 000083E5 		str	r0, [r3, #0]
+ 164 00f0 FEFFFFEA 		b	leds_display
+ 165              	.L30:
+ 166              		.align	2
+ 167              	.L29:
+ 168 00f4 00000000 		.word	.LANCHOR0
+ 170              		.align	2
+ 171              		.global	leds_init
+ 173              	leds_init:
+ 174              		@ Function supports interworking.
+ 175              		@ args = 0, pretend = 0, frame = 0
+ 176              		@ frame_needed = 1, uses_anonymous_args = 0
+ 177 00f8 0DC0A0E1 		mov	ip, sp
+ 178 00fc 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 179 0100 0110A0E3 		mov	r1, #1
+ 180 0104 04B04CE2 		sub	fp, ip, #4
+ 181 0108 0900A0E3 		mov	r0, #9
+ 182 010c FEFFFFEB 		bl	portB_conf
+ 183 0110 0110A0E3 		mov	r1, #1
+ 184 0114 0A00A0E3 		mov	r0, #10
+ 185 0118 FEFFFFEB 		bl	portB_conf
+ 186 011c 0C309FE5 		ldr	r3, .L32
+ 187 0120 000093E5 		ldr	r0, [r3, #0]
+ 188 0124 0CD04BE2 		sub	sp, fp, #12
+ 189 0128 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 190 012c FEFFFFEA 		b	leds_display
+ 191              	.L33:
+ 192              		.align	2
+ 193              	.L32:
+ 194 0130 00000000 		.word	.LANCHOR0
+ 196              		.bss
+ 197              		.align	2
+ 198              		.set	.LANCHOR0,. + 0
+ 201              	status:
+ 202 0000 00000000 		.space	4
+ 203              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 leds.c
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:13     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:16     .text:00000000 leds_display
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:42     .text:0000004c $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:44     .text:00000050 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:47     .text:00000050 leds_switch
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:60     .text:00000064 $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:62     .text:00000068 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:65     .text:00000068 led2_switch
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:78     .text:0000007c $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:80     .text:00000080 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:83     .text:00000080 led1_switch
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:96     .text:00000094 $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:98     .text:00000098 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:101    .text:00000098 led2_off
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:114    .text:000000ac $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:116    .text:000000b0 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:119    .text:000000b0 led2_on
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:132    .text:000000c4 $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:134    .text:000000c8 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:137    .text:000000c8 led1_off
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:150    .text:000000dc $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:152    .text:000000e0 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:155    .text:000000e0 led1_on
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:168    .text:000000f4 $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:170    .text:000000f8 $a
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:173    .text:000000f8 leds_init
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:194    .text:00000130 $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:197    .bss:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\cc6ABT20.s:201    .bss:00000000 status
+
+UNDEFINED SYMBOLS
+portB_write
+portB_conf

@@ -1,0 +1,102 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"D8Led.c"
+  12              		.text
+  13              		.align	2
+  14              		.global	D8Led_init
+  16              	D8Led_init:
+  17              		@ Function supports interworking.
+  18              		@ args = 0, pretend = 0, frame = 0
+  19              		@ frame_needed = 0, uses_anonymous_args = 0
+  20              		@ link register save eliminated.
+  21 0000 0020E0E3 		mvn	r2, #0
+  22 0004 8537A0E3 		mov	r3, #34865152
+  23 0008 0020C3E5 		strb	r2, [r3, #0]
+  24 000c 1EFF2FE1 		bx	lr
+  26              		.align	2
+  27              		.global	D8Led_segment
+  29              	D8Led_segment:
+  30              		@ Function supports interworking.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0010 070050E3 		cmp	r0, #7
+  35 0014 0C309F95 		ldrls	r3, .L4
+  36 0018 0021D397 		ldrlsb	r2, [r3, r0, asl #2]	@ zero_extendqisi2
+  37 001c 8537A093 		movls	r3, #34865152
+  38 0020 0020C395 		strlsb	r2, [r3, #0]
+  39 0024 1EFF2FE1 		bx	lr
+  40              	.L5:
+  41              		.align	2
+  42              	.L4:
+  43 0028 00000000 		.word	.LANCHOR0
+  45              		.align	2
+  46              		.global	D8Led_digit
+  48              	D8Led_digit:
+  49              		@ Function supports interworking.
+  50              		@ args = 0, pretend = 0, frame = 0
+  51              		@ frame_needed = 0, uses_anonymous_args = 0
+  52              		@ link register save eliminated.
+  53 002c 0F0050E3 		cmp	r0, #15
+  54 0030 10309F95 		ldrls	r3, .L8
+  55 0034 00018390 		addls	r0, r3, r0, asl #2
+  56 0038 2020D095 		ldrlsb	r2, [r0, #32]	@ zero_extendqisi2
+  57 003c 8537A093 		movls	r3, #34865152
+  58 0040 0020C395 		strlsb	r2, [r3, #0]
+  59 0044 1EFF2FE1 		bx	lr
+  60              	.L9:
+  61              		.align	2
+  62              	.L8:
+  63 0048 00000000 		.word	.LANCHOR0
+  65              		.section	.rodata
+  66              		.align	2
+  67              		.set	.LANCHOR0,. + 0
+  70              	Segments:
+  71 0000 80000000 		.word	128
+  72 0004 40000000 		.word	64
+  73 0008 20000000 		.word	32
+  74 000c 08000000 		.word	8
+  75 0010 04000000 		.word	4
+  76 0014 01000000 		.word	1
+  77 0018 02000000 		.word	2
+  78 001c 10000000 		.word	16
+  81              	Digits:
+  82 0020 ED000000 		.word	237
+  83 0024 60000000 		.word	96
+  84 0028 CE000000 		.word	206
+  85 002c EA000000 		.word	234
+  86 0030 63000000 		.word	99
+  87 0034 AB000000 		.word	171
+  88 0038 AF000000 		.word	175
+  89 003c E0000000 		.word	224
+  90 0040 EF000000 		.word	239
+  91 0044 E3000000 		.word	227
+  92 0048 E7000000 		.word	231
+  93 004c 2F000000 		.word	47
+  94 0050 0E000000 		.word	14
+  95 0054 6E000000 		.word	110
+  96 0058 8F000000 		.word	143
+  97 005c 87000000 		.word	135
+  98              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 D8Led.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:13     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:16     .text:00000000 D8Led_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:29     .text:00000010 D8Led_segment
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:43     .text:00000028 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:45     .text:0000002c $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:48     .text:0000002c D8Led_digit
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:63     .text:00000048 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:66     .rodata:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:70     .rodata:00000000 Segments
+C:\Users\USUARI~1\AppData\Local\Temp\ccDKx6Wk.s:81     .rodata:00000020 Digits
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,47 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"button.c"
+  12              		.text
+  13              		.align	2
+  14              		.global	read_button
+  16              	read_button:
+  17              		@ Function supports interworking.
+  18              		@ args = 0, pretend = 0, frame = 8
+  19              		@ frame_needed = 1, uses_anonymous_args = 0
+  20 0000 0DC0A0E1 		mov	ip, sp
+  21 0004 10D82DE9 		stmfd	sp!, {r4, fp, ip, lr, pc}
+  22 0008 04B04CE2 		sub	fp, ip, #4
+  23 000c 0CD04DE2 		sub	sp, sp, #12
+  24 0010 15104BE2 		sub	r1, fp, #21
+  25 0014 0600A0E3 		mov	r0, #6
+  26 0018 FEFFFFEB 		bl	portG_read
+  27 001c 0700A0E3 		mov	r0, #7
+  28 0020 15104BE2 		sub	r1, fp, #21
+  29 0024 15405BE5 		ldrb	r4, [fp, #-21]	@ zero_extendqisi2
+  30 0028 FEFFFFEB 		bl	portG_read
+  31 002c 15305BE5 		ldrb	r3, [fp, #-21]	@ zero_extendqisi2
+  32 0030 000053E3 		cmp	r3, #0
+  33 0034 0200A003 		moveq	r0, #2
+  34 0038 0100000A 		beq	.L2
+  35 003c 010074E2 		rsbs	r0, r4, #1
+  36 0040 0000A033 		movcc	r0, #0
+  37              	.L2:
+  38 0044 10D04BE2 		sub	sp, fp, #16
+  39 0048 10689DE8 		ldmfd	sp, {r4, fp, sp, lr}
+  40 004c 1EFF2FE1 		bx	lr
+  42              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 button.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccVhlO8R.s:13     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccVhlO8R.s:16     .text:00000000 read_button
+
+UNDEFINED SYMBOLS
+portG_read

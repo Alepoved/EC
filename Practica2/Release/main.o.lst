@@ -1,0 +1,159 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  12              		.text
+  13              		.align	2
+  14              		.global	setup
+  16              	setup:
+  17              		@ Function supports interworking.
+  18              		@ args = 0, pretend = 0, frame = 0
+  19              		@ frame_needed = 1, uses_anonymous_args = 0
+  20 0000 0DC0A0E1 		mov	ip, sp
+  21 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+  22 0008 04B04CE2 		sub	fp, ip, #4
+  23 000c FEFFFFEB 		bl	leds_init
+  24 0010 FEFFFFEB 		bl	D8Led_init
+  25 0014 4C309FE5 		ldr	r3, .L2
+  26 0018 100093E5 		ldr	r0, [r3, #16]
+  27 001c FEFFFFEB 		bl	D8Led_segment
+  28 0020 0010A0E3 		mov	r1, #0
+  29 0024 0600A0E3 		mov	r0, #6
+  30 0028 FEFFFFEB 		bl	portG_conf
+  31 002c 0010A0E3 		mov	r1, #0
+  32 0030 0700A0E3 		mov	r0, #7
+  33 0034 FEFFFFEB 		bl	portG_conf
+  34 0038 0110A0E3 		mov	r1, #1
+  35 003c 0600A0E3 		mov	r0, #6
+  36 0040 FEFFFFEB 		bl	portG_conf_pup
+  37 0044 0110A0E3 		mov	r1, #1
+  38 0048 0700A0E3 		mov	r0, #7
+  39 004c FEFFFFEB 		bl	portG_conf_pup
+  40 0050 0000A0E3 		mov	r0, #0
+  41 0054 FEFFFFEB 		bl	Delay
+  42 0058 0000A0E3 		mov	r0, #0
+  43 005c 0CD04BE2 		sub	sp, fp, #12
+  44 0060 00689DE8 		ldmfd	sp, {fp, sp, lr}
+  45 0064 1EFF2FE1 		bx	lr
+  46              	.L3:
+  47              		.align	2
+  48              	.L2:
+  49 0068 00000000 		.word	.LANCHOR0
+  51              		.align	2
+  52              		.global	loop
+  54              	loop:
+  55              		@ Function supports interworking.
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 1, uses_anonymous_args = 0
+  58 006c 0DC0A0E1 		mov	ip, sp
+  59 0070 18D82DE9 		stmfd	sp!, {r3, r4, fp, ip, lr, pc}
+  60 0074 04B04CE2 		sub	fp, ip, #4
+  61 0078 FEFFFFEB 		bl	read_button
+  62 007c 010010E3 		tst	r0, #1
+  63 0080 0040A0E1 		mov	r4, r0
+  64 0084 0500000A 		beq	.L5
+  65 0088 FEFFFFEB 		bl	led1_switch
+  66 008c A0309FE5 		ldr	r3, .L12
+  67 0090 0C2093E5 		ldr	r2, [r3, #12]
+  68 0094 000052E3 		cmp	r2, #0
+  69 0098 01208202 		addeq	r2, r2, #1
+  70 009c 0C208305 		streq	r2, [r3, #12]
+  71              	.L5:
+  72 00a0 020014E3 		tst	r4, #2
+  73 00a4 88409FE5 		ldr	r4, .L12
+  74 00a8 0400000A 		beq	.L6
+  75 00ac FEFFFFEB 		bl	led2_switch
+  76 00b0 0C3094E5 		ldr	r3, [r4, #12]
+  77 00b4 000053E3 		cmp	r3, #0
+  78 00b8 01308302 		addeq	r3, r3, #1
+  79 00bc 0C308405 		streq	r3, [r4, #12]
+  80              	.L6:
+  81 00c0 002094E5 		ldr	r2, [r4, #0]
+  82 00c4 000052E3 		cmp	r2, #0
+  83 00c8 64309FE5 		ldr	r3, .L12
+  84 00cc 1200000A 		beq	.L7
+  85 00d0 082093E5 		ldr	r2, [r3, #8]
+  86 00d4 012042E2 		sub	r2, r2, #1
+  87 00d8 000052E3 		cmp	r2, #0
+  88 00dc 082083E5 		str	r2, [r3, #8]
+  89 00e0 0D00001A 		bne	.L7
+  90 00e4 0C2093E5 		ldr	r2, [r3, #12]
+  91 00e8 000052E3 		cmp	r2, #0
+  92 00ec 0500001A 		bne	.L8
+  93 00f0 101093E5 		ldr	r1, [r3, #16]
+  94 00f4 040051E3 		cmp	r1, #4
+  95 00f8 011081D2 		addle	r1, r1, #1
+  96 00fc 101083D5 		strle	r1, [r3, #16]
+  97 0100 050000DA 		ble	.L7
+  98 0104 030000EA 		b	.L11
+  99              	.L8:
+ 100 0108 102093E5 		ldr	r2, [r3, #16]
+ 101 010c 000052E3 		cmp	r2, #0
+ 102 0110 012042C2 		subgt	r2, r2, #1
+ 103 0114 0520A0D3 		movle	r2, #5
+ 104              	.L11:
+ 105 0118 102083E5 		str	r2, [r3, #16]
+ 106              	.L7:
+ 107 011c 7D0EA0E3 		mov	r0, #2000
+ 108 0120 FEFFFFEB 		bl	Delay
+ 109 0124 0000A0E3 		mov	r0, #0
+ 110 0128 14D04BE2 		sub	sp, fp, #20
+ 111 012c 18689DE8 		ldmfd	sp, {r3, r4, fp, sp, lr}
+ 112 0130 1EFF2FE1 		bx	lr
+ 113              	.L13:
+ 114              		.align	2
+ 115              	.L12:
+ 116 0134 00000000 		.word	.LANCHOR0
+ 118              		.align	2
+ 119              		.global	main
+ 121              	main:
+ 122              		@ Function supports interworking.
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 1, uses_anonymous_args = 0
+ 125 0138 0DC0A0E1 		mov	ip, sp
+ 126 013c 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 127 0140 04B04CE2 		sub	fp, ip, #4
+ 128 0144 FEFFFFEB 		bl	setup
+ 129              	.L15:
+ 130 0148 FEFFFFEB 		bl	loop
+ 131 014c FDFFFFEA 		b	.L15
+ 133              		.data
+ 134              		.align	2
+ 135              		.set	.LANCHOR0,. + 0
+ 138              	RL:
+ 139 0000 00000000 		.word	0
+ 140 0004 05000000 		.word	5
+ 141 0008 00000000 		.word	0
+ 142 000c 00000000 		.word	0
+ 143 0010 00000000 		.word	0
+ 144              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:13     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:16     .text:00000000 setup
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:49     .text:00000068 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:51     .text:0000006c $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:54     .text:0000006c loop
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:116    .text:00000134 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:118    .text:00000138 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:121    .text:00000138 main
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:134    .data:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccLbrnmw.s:138    .data:00000000 RL
+
+UNDEFINED SYMBOLS
+leds_init
+D8Led_init
+D8Led_segment
+portG_conf
+portG_conf_pup
+Delay
+read_button
+led1_switch
+led2_switch
