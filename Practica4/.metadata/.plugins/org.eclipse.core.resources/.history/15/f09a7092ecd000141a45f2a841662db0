@@ -1,0 +1,115 @@
+/*-------------------------------------------------------------------
+**
+**  Fichero:
+**    main.c  10/6/2014
+**
+**    Estructura de Computadores
+**    Dpto. de Arquitectura de Computadores y Automática
+**    Facultad de Informática. Universidad Complutense de Madrid
+**
+**  Propósito:
+**    Genera y trata una colección de excepciones/interrupciones
+**
+**  Notas de diseño:
+**
+**-----------------------------------------------------------------*/
+
+#include "44b.h"
+#include "leds.h"
+#include "button.h"
+#include "utils.h"
+
+char Screen[1024];
+
+extern void DoSWI  (void);
+extern void DoUndef(void);
+extern void DoDabort(void);
+
+void write(char* text, char* address);
+void ISR_SWI(void) __attribute__ ((interrupt ("SWI")));
+void ISR_Undef(void) __attribute__ ((interrupt ("UNDEF")));
+void ISR_FIQ(void) __attribute__ ((interrupt ("FIQ")));
+void ISR_Pabort(void) __attribute__ ((interrupt ("ABORT")));
+void ISR_Dabort(void) __attribute__ ((interrupt ("ABORT")));
+void ISR_IRQ(void) __attribute__ ((interrupt ("IRQ")));
+
+void write(char* text, char* address)
+{
+	while( *text != 0 )
+	  *address++ = *text++;
+}
+
+void ISR_IRQ(void)
+{
+	write("IRQ   ",Screen);
+}
+
+void ISR_Undef(void)
+{
+    write("Undef ",Screen);
+}
+
+void ISR_FIQ(void)
+{
+    write("FIQ   ",Screen);
+	if( rINTPND & BIT_EINT4567 )
+		if( rEXTINTPND & ((1<<2)|(1<<3)) )
+			DoDetecta();
+
+	 rF_ISPC  = BIT_EINT4567;		// borra el bit pendiente en INTPND
+
+}
+
+void ISR_SWI(void)
+{
+    write("SWI   ",Screen);
+}
+
+void ISR_Pabort(void)
+{
+    write("Pabort",Screen);
+}
+
+void ISR_Dabort(void)
+{
+    write("Dabort",Screen);
+}
+
+
+void intcont_init(void) {
+	/* Configura el controlador de interrupciones */
+	rINTCON    = 0x0;	 // Modo  vectorizado, IRQ y FIQ habilitadas
+
+	rINTMOD    = 0x0;	 // Todas por IRQ
+	rI_ISPC    = ~(0x0); // Borra interrupciones pendientes
+	rF_ISPC    = ~(0x0); //Borra interrupciones por FIQ pendientes
+ 	rEXTINTPND = ~(0x0); // Borra EXTINTPND escribiendo 1s en el propio registro
+	rINTMSK   = ~(BIT_GLOBAL); // Enmascaramos todas las lineas, pero dejamos activo el bit GLOBAL
+
+}
+
+
+int main(void)
+{
+
+	/* Instala ISR */
+	pISR_UNDEF  = (unsigned) ISR_Undef;
+	pISR_SWI    = (unsigned) ISR_SWI;
+	pISR_PABORT	= (unsigned) ISR_Pabort;
+	pISR_DABORT = (unsigned) ISR_Dabort;
+	pISR_IRQ    = (unsigned) ISR_IRQ;
+	pISR_FIQ    = (unsigned) ISR_FIQ;
+	
+
+	intcont_init();
+	leds_init();
+	button_init();
+	Delay(0);
+
+    DoUndef();
+    DoSWI();
+    DoDabort();
+
+	while(1);
+	return (0);
+}

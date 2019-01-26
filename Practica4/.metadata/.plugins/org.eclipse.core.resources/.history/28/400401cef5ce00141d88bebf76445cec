@@ -1,0 +1,54 @@
+/*-------------------------------------------------------------------
+**
+**  Fichero:
+**    main.c  10/6/2014
+**
+**    Estructura de Computadores
+**    Dpto. de Arquitectura de Computadores y Automática
+**    Facultad de Informática. Universidad Complutense de Madrid
+**
+**  Propósito:
+**    Implementa un contador start/stop
+**
+**  Notas de diseño:
+**
+**-----------------------------------------------------------------*/
+
+#include "44b.h"
+#include "utils.h"
+#include "leds.h"
+#include "D8Led.h"
+#include "button.h"
+#include "timer.h"
+
+
+void intcont_init(void) {
+	/* Configura el controlador de interrupciones */
+	rINTCON    = 0x0;	 // Modo  vectorizado, IRQ y FIQ habilitadas
+
+	rINTMOD    = 0x0;	 // Todas por IRQ
+	rI_ISPC    = ~(0x0); // Borra interrupciones pendientes
+	rF_ISPC    = ~(0x0); //Borra interrupciones por FIQ pendientes
+ 	rEXTINTPND = ~(0x0); // Borra EXTINTPND escribiendo 1s en el propio registro
+	rINTMSK    = ~(BIT_GLOBAL); // Enmascaramos todas las lineas, pero dejamos activo el bit GLOBAL
+}
+
+int main(void)
+{	
+	/* Configura el controlador de interrupciones */
+	intcont_init();
+
+	leds_init();
+	led2_off();
+	led1_on();
+
+	D8Led_init();
+	D8Led_digit( 0 );  	/* muestra el simbolo inicial en el display */
+
+	button_init();
+	timer_init();
+
+    while(1);
+
+    return 0;
+}

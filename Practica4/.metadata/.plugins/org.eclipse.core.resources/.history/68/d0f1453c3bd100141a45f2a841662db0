@@ -1,0 +1,63 @@
+/*-------------------------------------------------------------------
+**
+**  Fichero:
+**    button.c  10/6/2014
+**
+**    Estructura de Computadores
+**    Dpto. de Arquitectura de Computadores y Automática
+**    Facultad de Informática. Universidad Complutense de Madrid
+**
+**  Propósito:
+**    Contiene las implementaciones de las funciones
+**    para la gestión de los pulsadores de la placa de prototipado
+**
+**  Notas de diseño:
+**
+**-----------------------------------------------------------------*/
+
+#include "44b.h"
+#include "utils.h"
+#include "button.h"
+#include "leds.h"
+
+void button_init( void )
+{
+	// EINT4567 por FIQ
+	rINTMOD = (rINTMOD | BIT_EINT4567 );
+	rPCONG  = (rPCONG & ~( 0xf << 12 )) | ( 0xF << 12 ); //configuramos PG6 y 7 como EINT
+	rPUPG = 0x0;
+ 	rEXTINT = (rEXTINT & ~( 0xff << 24 )) | (0x22 << 24); // interrupciones de PG6 y 7 por flanco de bajada
+	rINTMSK   &= ~(BIT_GLOBAL|BIT_EINT4567); // Desenmascara las lineas eint4567 y el bit global
+}
+
+void DoDetecta(void) 
+{
+	int which_int;
+
+	/* Idenficiar la interrupcion */
+	which_int = rEXTINTPND;
+
+	/* Espera fin de rebote de presión */
+	// Delay hace espera activa. Tiempo expresado en unidades de 100us (2000 -> 200 ms)
+    Delay( 2000 );
+
+	/* Encender/apagar el LED adecuado */
+	switch (which_int) {
+		case 4:
+			led1_switch();
+			break;
+		case 8:
+			led2_switch();
+			break;
+		default:
+			break;
+   }
+
+   /* Finalizar ISR */
+   rEXTINTPND = 0xf;				// borra los bits en EXTINTPND
+
+
+}
+
+
+

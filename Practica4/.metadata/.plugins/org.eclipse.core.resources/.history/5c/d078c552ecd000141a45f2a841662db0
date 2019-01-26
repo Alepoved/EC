@@ -1,0 +1,38 @@
+/*-----------------------------------------------------------------
+**
+**  Fichero:
+**    misc.asm  10/6/2014
+**
+**    Estructura de Computadores
+**    Dpto. de Arquitectura de Computadores y Automática
+**    Facultad de Informática. Universidad Complutense de Madrid
+**
+**  Propósito:
+**    Contiene las implementaciones de las funciones en ensamblador
+**    usadas por el programa principal
+**
+**  Notas de diseño:
+**
+**---------------------------------------------------------------*/
+
+	.global DoUndef
+    .global DoSWI
+    .global DoDabort
+
+.text
+
+DoSWI:
+	swi #0
+	mov pc,lr
+
+DoUndef:
+	.word 0xE6000010
+	mov pc,lr
+
+DoDabort:
+	ldr r0,=0x0a333333
+	str r0,[r0]
+	mov pc,lr
+
+	.end
+
