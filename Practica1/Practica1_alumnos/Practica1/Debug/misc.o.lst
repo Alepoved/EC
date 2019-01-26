@@ -1,0 +1,92 @@
+   1              	# 1 "../misc.asm"
+   1              	.equ COEF1, 3483
+   0              	
+   0              	
+   0              	
+   2              		.equ COEF2, 11718
+   3              		.equ COEF3, 1183
+   4              	
+   5              		.text
+   6              	
+   7              		.extern gaussian
+   8              		.global rgb2gray
+   9              		.global div16384
+  10              		.global apply_gaussian
+  11              	
+  12              	rgb2gray:
+  13 0000 70402DE9 			push {r4-r6, lr}
+  14 0004 0010D0E5 			ldrb r1,[r0]
+  15 0008 0120D0E5 			ldrb r2,[r0,#1]
+  16 000c 0230D0E5 			ldrb r3,[r0,#2]
+  17 0010 94409FE5 			ldr r4,=COEF1
+  18 0014 94509FE5 			ldr r5,=COEF2
+  19 0018 94609FE5 			ldr r6,=COEF3
+  20 001c 910404E0 			mul r4,r1,r4
+  21 0020 920505E0 			mul r5,r2,r5
+  22 0024 930606E0 			mul r6,r3,r6
+  23 0028 050084E0 			add r0,r4,r5
+  24 002c 060080E0 			add r0,r0,r6
+  25 0030 FEFFFFEB 			bl div16384
+  26 0034 7040BDE8 			pop {r4-r6, lr}
+  27 0038 0EF0A0E1 			mov pc,lr
+  28              	
+  29              	
+  30              	div16384:
+  31 003c 2007A0E1 			lsr r0,r0,#14
+  32 0040 0EF0A0E1 			mov pc,lr
+  33              	
+  34              	
+  35              	
+  36              	apply_gaussian:
+  37 0044 F0412DE9 			push {r4-r8, lr}
+  38 0048 0050A0E3 			mov r5,#0			//i
+  39              		for1:
+  40 004c 030055E1 			cmp r5,r3				//comparo
+  41 0050 130000AA 			bge finfor1
+  42 0054 0060A0E3 			mov r6,#0				//j
+  43              		for2:
+  44 0058 020056E1 			cmp r6,r2				//comparo
+  45 005c 0E0000AA 			bge finfor2
+  46 0060 0F002DE9 			push {r0-r3}			//guardamos la entrada de apply_gaussian
+  47 0064 0210A0E1 			mov r1,r2
+  48 0068 0320A0E1 			mov r2,r3
+  49 006c 0530A0E1 			mov r3,r5
+  50 0070 0640A0E1 			mov r4,r6
+  51 0074 04402DE5 			push {r4}
+  52 0078 FEFFFFEB 			bl gaussian
+  53 007c 04D08DE2 			add sp,sp,#4
+  54 0080 0070A0E1 			mov r7, r0 				//devolicion
+  55 0084 0F00BDE8 			pop {r0-r3}
+  56 0088 950208E0 			mul r8,r5,r2			// i*weight
+  57 008c 068088E0 			add r8,r8,r6			// i*weight + j
+  58 0090 0870C1E7 			strb r7,[r1,r8]			//Guardamos en img2
+  59 0094 016086E2 			add r6, r6,#1
+  60 0098 EEFFFFEA 			b for2
+  61              		finfor2:
+  62 009c 015085E2 			add r5,r5,#1
+  63 00a0 E9FFFFEA 			b for1
+  64              		finfor1:
+  65 00a4 F041BDE8 			pop {r4-r8, lr}
+  66 00a8 0EF0A0E1 			mov pc,lr
+  67              	
+  68              	
+  69 00ac 9B0D0000 	  		.end
+  69      C62D0000 
+  69      9F040000 
+DEFINED SYMBOLS
+         ../misc.asm:1      *ABS*:00000d9b COEF1
+         ../misc.asm:2      *ABS*:00002dc6 COEF2
+         ../misc.asm:3      *ABS*:0000049f COEF3
+         ../misc.asm:12     .text:00000000 rgb2gray
+         ../misc.asm:30     .text:0000003c div16384
+         ../misc.asm:36     .text:00000044 apply_gaussian
+         ../misc.asm:13     .text:00000000 $a
+         ../misc.asm:39     .text:0000004c for1
+         ../misc.asm:64     .text:000000a4 finfor1
+         ../misc.asm:43     .text:00000058 for2
+         ../misc.asm:61     .text:0000009c finfor2
+         ../misc.asm:69     .text:000000ac $d
+                   .debug_aranges:0000000c $d
+
+UNDEFINED SYMBOLS
+gaussian
